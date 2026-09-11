@@ -3,7 +3,8 @@
 A static check-in/reflection form with a Netlify serverless function backend,
 using Netlify Blobs for storage. Same fields and behavior as the Claude
 artifact version: public "who's checked in" list, a running count, and a
-key-gated instructor view with full responses and a reset button.
+key-gated instructor view with full responses, a CSV download, and a reset
+button.
 
 ## Files
 
@@ -34,23 +35,25 @@ key-gated instructor view with full responses and a reset button.
    form immediately, no extra setup required for the storage side; Netlify
    Blobs works automatically for any site's functions.
 
-5. **Set your instructor key.** In the site's dashboard, go to **Site
-   configuration → Environment variables → Add a variable**. Name it
-   `INSTRUCTOR_KEY`, set the value to any secret string you choose (e.g.
-   something like `evangel-cs-2026`), and save. Then **trigger a redeploy**
-   (Deploys tab → "Trigger deploy" → "Deploy site") so the function picks
-   up the new variable.
+5. **Set your instructor key.** In the site's dashboard sidebar, go to
+   **Project configuration → Environment variables → Add a variable**
+   (Netlify renamed "Site configuration" to "Project configuration" at
+   some point — same place, new label). Name it `INSTRUCTOR_KEY`, set the
+   value to any secret string you choose (e.g. something like
+   `evangel-cs-2026`), and save. Then **trigger a redeploy** (Deploys tab
+   → "Trigger deploy" → "Deploy site") so the function picks up the new
+   variable.
 
 6. **Test it.** Open your Netlify URL, submit a test check-in, then open
    `your-url.netlify.app/?key=YOUR_SECRET` (using the value you set in
-   step 5) — you should see the full-response table and the "Clear all
-   check-ins" button. Use that button to wipe your test data before the
-   real event.
+   step 5) — you should see the full-response table, a "Download CSV"
+   button, and the "Clear all check-ins" button. Use Clear to wipe your
+   test data before the real event.
 
-7. **(Optional) Custom domain / nicer URL.** Under **Site configuration →
-   Domain management**, you can add a custom domain if you have one, or
-   just rename the site (Site configuration → General → Change site name)
-   to get a friendlier `*.netlify.app` URL like
+7. **(Optional) Custom domain / nicer URL.** Under **Project configuration
+   → Domain management**, you can add a custom domain if you have one, or
+   just rename the site (Project configuration → General → Change site
+   name) to get a friendlier `*.netlify.app` URL like
    `ieee-career-fair-evangel.netlify.app`.
 
 ## Sharing the links
@@ -59,7 +62,18 @@ key-gated instructor view with full responses and a reset button.
   login, and it works for anyone regardless of school.
 - **You (grading):** use the same URL with `?key=YOUR_SECRET` appended,
   from step 5. Keep that full URL private — anyone with it can see full
-  responses and clear all data.
+  responses, download the CSV, and clear all data.
+
+## Collecting the responses
+
+Open `your-url.netlify.app/?key=YOUR_SECRET` and click **Download CSV**
+under the full-responses table. That downloads every check-in (name,
+school, course/instructor, companies, takeaway, email, timestamp) as a
+`career-fair-checkins-YYYY-MM-DD.csv` file, ready to open in Excel or
+Google Sheets for grading. There's no automatic export to a spreadsheet
+service — this is a manual, on-demand pull whenever you want a fresh copy,
+and the live full-responses table on that same page is always current if
+you don't need a file.
 
 ## Notes
 

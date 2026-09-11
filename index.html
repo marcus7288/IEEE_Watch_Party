@@ -151,7 +151,10 @@
       <h2>Full responses (instructor view)</h2>
       <div class="hint">Only visible with the correct <code>?key=</code> link.</div>
       <table class="admin-table" id="admin-table"><thead><tr><th>Name</th><th>School</th><th>Course / instructor</th><th>Companies</th><th>Takeaway</th><th>Email</th><th>Submitted</th></tr></thead><tbody></tbody></table>
-      <button type="button" class="submit danger" id="clear-btn" style="margin-top:16px;">Clear all check-ins</button>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
+        <a href="#" id="download-csv" class="submit" style="flex:1 1 200px; text-decoration:none; text-align:center; display:inline-block;">Download CSV</a>
+        <button type="button" class="submit danger" id="clear-btn" style="flex:1 1 200px; margin-top:0;">Clear all check-ins</button>
+      </div>
       <div class="msg" id="admin-msg"></div>
     </div>
 
@@ -200,6 +203,11 @@
           esc(s.submittedAt ? new Date(s.submittedAt).toLocaleString() : "") + "</td></tr>";
       });
       tbody.innerHTML = rows.join("") || '<tr><td colspan="7" class="empty">No responses yet.</td></tr>';
+
+      var dl = document.getElementById("download-csv");
+      var params = new URLSearchParams(qs());
+      params.set("format", "csv");
+      dl.href = API + "?" + params.toString();
     }
   }
 

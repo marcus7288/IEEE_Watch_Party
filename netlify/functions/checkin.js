@@ -35,6 +35,45 @@ function fullShape(entry) {
   };
 }
 
+const CSV_COLUMNS = [
+  ["name", "Name"],
+  ["school", "School"],
+  ["instructorCourse", "Course / Instructor"],
+  ["companies", "Companies"],
+  ["takeaway", "Takeaway"],
+  ["email", "Email"],
+  ["submittedAt", "Submitted At"]
+];
+
+function csvCell(value) {
+  const s = String(value == null ? "" : value);
+  if (/[",\n\r]/.test(s)) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+function toCsv(rows) {
+  const header = CSV_COLUMNS.map(([, label]) => csvCell(label)).join(",");
+  const lines = rows.map((row) =>
+    CSV_COLUMNS.map(([key]) => csvCell(row[key])).join(",")
+  );
+  // \r\n line endings and a leading BOM keep Excel happy with UTF-8 text.
+  return "﻿" + [header].concat(lines).join("\r\n") + "\r\n";
+}
+
+function csvResponse(rows) {
+  const csv = toCsv(rows);
+  const stamp = new Date().toISOString().slice(0, 10);
+  return new Response(csv, {
+    status: 200,
+    headers: {
+      "content-type": "text/csv; charset=utf-8",
+      "content-disposition": 'attachment; filename="career-fair-checkins-' + stamp + '.csv"'
+    }
+  });
+}
+
 export default async (req) => {
   const url = new URL(req.url);
   const store = getStore(STORE_NAME);
@@ -43,6 +82,14 @@ export default async (req) => {
   if (req.method === "GET") {
     const list = (await store.get(BLOB_KEY, { type: "json" })) || [];
     const ordered = list.slice().reverse();
+
+    if (url.searchParams.get("format") === "csv") {
+      if (!admin) {
+        return jsonResponse({ error: "Not authorized." }, 403);
+      }
+      return csvResponse(ordered.map(fullShape));
+    }
+
     const body = {
       count: list.length,
       list: ordered.map(publicShape)
