@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IEEE Career Fair Watch Party — Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --maroon: #75243d;
+    --maroon-dark: #571b2e;
+    --lake: #285c69;
+    --gray: #98988f;
+    --cave: #baab8a;
+    --bg: #fdfbfa;
+    --card: #ffffff;
+    --ink: #2b2b2b;
+    --muted: #6b6a63;
+    --border: #e6e1db;
+    --tint: #f4ede9;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  h1, h2, h3 { font-family: 'Bitter', Georgia, serif; margin: 0; }
+  a { color: var(--maroon); }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
+  .hero { background: var(--maroon); color: #fff; border-radius: 14px; padding: 32px 28px; margin-bottom: 28px; }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cave); margin-bottom: 8px; }
+  .hero h1 { font-size: 32px; font-weight: 800; line-height: 1.15; }
+  .hero p { margin: 10px 0 0; font-size: 15px; color: #f0e6ea; max-width: 52ch; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 24px; }
+  .card h2 { font-size: 20px; margin-bottom: 4px; }
+  .card .hint { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; margin-top: 18px; }
+  label:first-of-type { margin-top: 0; }
+  .req { color: var(--maroon); font-weight: 700; }
+  input[type=text], input[type=email], select, textarea {
+    width: 100%; font: inherit; padding: 10px 12px; border: 1px solid #cfc9c2; border-radius: 8px; background: #fff; color: var(--ink);
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--maroon); outline-offset: 1px; }
+  textarea { min-height: 72px; resize: vertical; }
+  .optional-tag { font-weight: 400; color: var(--muted); font-size: 13px; }
+  .row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .row > * { flex: 1 1 220px; }
+  button.submit {
+    margin-top: 24px; width: 100%; background: var(--maroon); color: #fff; border: none;
+    padding: 14px 20px; font-size: 16px; font-weight: 700; border-radius: 8px; cursor: pointer; font-family: inherit;
+  }
+  button.submit:hover { background: var(--maroon-dark); }
+  button.submit:disabled { opacity: 0.6; cursor: default; }
+  button.danger { background: #8a2b2b; }
+  .msg { margin-top: 14px; padding: 12px 14px; border-radius: 8px; font-size: 14px; display: none; }
+  .msg.show { display: block; }
+  .msg.error { background: #fbe9ea; color: #8a2b2b; border: 1px solid #e6b8ba; }
+  .msg.ok { background: #eaf2ee; color: #285c40; border: 1px solid #bcd9c9; }
+  .confirm { display: none; text-align: center; padding: 12px 0 4px; }
+  .confirm.show { display: block; }
+  .confirm .check {
+    width: 52px; height: 52px; border-radius: 50%; background: var(--tint); color: var(--maroon);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;
+  }
+  .confirm h3 { font-size: 20px; margin-bottom: 6px; }
+  .confirm p { color: var(--muted); font-size: 14px; margin: 0; }
+  .count-strip { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .count-strip .num { font-family: 'Bitter', Georgia, serif; font-weight: 800; font-size: 22px; color: var(--maroon); }
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .list .row-item { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; background: var(--tint); border-radius: 8px; font-size: 14px; }
+  .list .row-item .school { color: var(--muted); }
+  .empty { color: var(--muted); font-size: 14px; font-style: italic; }
+  .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  .admin-table th, .admin-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .admin-table th { color: var(--muted); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .footer-note { text-align: center; color: var(--muted); font-size: 13px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">IEEE Global Career Fair &middot; US Section</div>
+      <h1>Watch Party Check-In</h1>
+      <p>Evangel University Computer Science &mdash; Sept 24, 2026. Check in, note who you talked to, and use this as your proof of participation if your instructor is offering extra credit.</p>
+    </div>
+
+    <div class="card">
+      <h2>Check in</h2>
+      <div class="hint">Takes about a minute. You can submit more than once if you talk to more companies later.</div>
+      <form id="checkin-form" novalidate>
+        <div class="row">
+          <div>
+            <label for="f-name">Full name <span class="req">*</span></label>
+            <input type="text" id="f-name" name="name" autocomplete="name" required>
+          </div>
+          <div>
+            <label for="f-school">School <span class="req">*</span></label>
+            <select id="f-school" name="school" required>
+              <option value="">Choose one&hellip;</option>
+              <option>Evangel University</option>
+              <option>Missouri State University</option>
+              <option>Drury University</option>
+              <option>Ozarks Technical Community College (OTC)</option>
+              <option>Southwest Baptist University</option>
+              <option>College of the Ozarks</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div id="other-school-wrap" style="display:none;">
+          <label for="f-school-other">School name</label>
+          <input type="text" id="f-school-other" name="schoolOther">
+        </div>
+        <label for="f-course">Course / instructor <span class="optional-tag">(only if you want extra credit)</span></label>
+        <input type="text" id="f-course" name="instructorCourse" placeholder="e.g., CPSC 101 &ndash; Prof. Maine">
+        <label for="f-companies">Companies you talked to <span class="optional-tag">(optional)</span></label>
+        <textarea id="f-companies" name="companies" placeholder="e.g., Nokia, Morgan Stanley, SEL"></textarea>
+        <label for="f-takeaway">One thing you learned <span class="optional-tag">(optional)</span></label>
+        <textarea id="f-takeaway" name="takeaway" placeholder="A tip, a lead, something that surprised you&hellip;"></textarea>
+        <label for="f-email">Email <span class="optional-tag">(optional, for follow-up)</span></label>
+        <input type="email" id="f-email" name="email" autocomplete="email">
+        <button type="submit" class="submit" id="submit-btn">Check in</button>
+        <div class="msg" id="form-msg"></div>
+      </form>
+      <div class="confirm" id="confirm-block">
+        <div class="check">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+        <h3>You&rsquo;re checked in</h3>
+        <p>Screenshot this page if your instructor asked for proof. Submit again any time you talk to another company.</p>
+        <button type="button" class="submit" id="another-btn" style="margin-top:16px;">Add another check-in</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="count-strip">
+        <h2>Who&rsquo;s checked in</h2>
+        <div><span class="num" id="count-num">0</span> <span style="color:var(--muted);font-size:13px;">check-ins so far</span></div>
+      </div>
+      <div class="list" id="checkin-list"><div class="empty">Loading&hellip;</div></div>
+    </div>
+
+    <div class="card" id="admin-card" style="display:none;">
+      <h2>Full responses (instructor view)</h2>
+      <div class="hint">Only visible with the correct <code>?key=</code> link.</div>
+      <table class="admin-table" id="admin-table"><thead><tr><th>Name</th><th>School</th><th>Course / instructor</th><th>Companies</th><th>Takeaway</th><th>Email</th><th>Submitted</th></tr></thead><tbody></tbody></table>
+      <button type="button" class="submit danger" id="clear-btn" style="margin-top:16px;">Clear all check-ins</button>
+      <div class="msg" id="admin-msg"></div>
+    </div>
+
+    <div class="footer-note">Evangel University Computer Science &middot; questions to <a href="mailto:mainem@evangel.edu">mainem@evangel.edu</a></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  var API = "/api/checkin";
+
+  function qs() {
+    return window.location.search || "";
+  }
+
+  function renderList(data) {
+    var listEl = document.getElementById("checkin-list");
+    var countEl = document.getElementById("count-num");
+    var items = data.list || [];
+    countEl.textContent = data.count != null ? data.count : items.length;
+
+    if (!items.length) {
+      listEl.innerHTML = '<div class="empty">No check-ins yet &mdash; be the first!</div>';
+    } else {
+      listEl.innerHTML = items.map(function (e) {
+        return '<div class="row-item"><span>' + esc(e.name) + '</span><span class="school">' + esc(e.school) + "</span></div>";
+      }).join("");
+    }
+
+    if (data.full) {
+      var adminCard = document.getElementById("admin-card");
+      adminCard.style.display = "";
+      var tbody = adminCard.querySelector("tbody");
+      var rows = data.full.map(function (s) {
+        return "<tr><td>" + esc(s.name) + "</td><td>" + esc(s.school) + "</td><td>" +
+          esc(s.instructorCourse) + "</td><td>" + esc(s.companies) + "</td><td>" +
+          esc(s.takeaway) + "</td><td>" + esc(s.email) + "</td><td>" +
+          esc(s.submittedAt ? new Date(s.submittedAt).toLocaleString() : "") + "</td></tr>";
+      });
+      tbody.innerHTML = rows.join("") || '<tr><td colspan="7" class="empty">No responses yet.</td></tr>';
+    }
+  }
+
+  async function loadList() {
+    try {
+      var res = await fetch(API + qs());
+      var data = await res.json();
+      renderList(data);
+    } catch (e) {
+      document.getElementById("checkin-list").innerHTML = '<div class="empty">Could not load check-ins right now.</div>';
+    }
+  }
+
+  function showMsg(text, isError) {
+    var m = document.getElementById("form-msg");
+    m.textContent = text;
+    m.className = "msg show " + (isError ? "error" : "ok");
+  }
+
+  function clearMsg() {
+    document.getElementById("form-msg").className = "msg";
+  }
+
+  function setSubmitting(on) {
+    var btn = document.getElementById("submit-btn");
+    btn.disabled = on;
+    btn.textContent = on ? "Checking in…" : "Check in";
+  }
+
+  function showConfirm() {
+    document.getElementById("checkin-form").style.display = "none";
+    document.getElementById("confirm-block").classList.add("show");
+  }
+
+  function resetForm() {
+    document.getElementById("confirm-block").classList.remove("show");
+    var f = document.getElementById("checkin-form");
+    f.style.display = "";
+    f.reset();
+    document.getElementById("other-school-wrap").style.display = "none";
+    clearMsg();
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    clearMsg();
+    var f = document.getElementById("checkin-form");
+    var entry = {
+      name: f.name.value.trim(),
+      school: f.school.value,
+      schoolOther: f.querySelector("#f-school-other").value.trim(),
+      instructorCourse: f.instructorCourse.value.trim(),
+      companies: f.companies.value.trim(),
+      takeaway: f.takeaway.value.trim(),
+      email: f.email.value.trim()
+    };
+    if (!entry.name || !entry.school) {
+      showMsg("Please add your name and school.", true);
+      return;
+    }
+    if (entry.school === "Other" && !entry.schoolOther) {
+      showMsg("Please tell us the name of your school.", true);
+      return;
+    }
+    setSubmitting(true);
+    try {
+      var res = await fetch(API, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(entry)
+      });
+      var data = await res.json();
+      if (!res.ok) {
+        showMsg(data.error || "Something went wrong. Please try again.", true);
+        setSubmitting(false);
+        return;
+      }
+      setSubmitting(false);
+      showConfirm();
+      loadList();
+    } catch (err) {
+      setSubmitting(false);
+      showMsg("Network error — check your connection and try again.", true);
+    }
+  }
+
+  async function handleClearAll() {
+    var ok = window.confirm("Clear ALL check-ins? This removes every submission for everyone and can't be undone.");
+    if (!ok) return;
+    var btn = document.getElementById("clear-btn");
+    var msg = document.getElementById("admin-msg");
+    btn.disabled = true;
+    btn.textContent = "Clearing…";
+    try {
+      var res = await fetch(API + qs(), { method: "DELETE" });
+      var data = await res.json();
+      btn.disabled = false;
+      btn.textContent = "Clear all check-ins";
+      if (!res.ok) {
+        msg.textContent = data.error || "Could not clear check-ins.";
+        msg.className = "msg show error";
+        return;
+      }
+      msg.textContent = "All check-ins cleared.";
+      msg.className = "msg show ok";
+      loadList();
+    } catch (e) {
+      btn.disabled = false;
+      btn.textContent = "Clear all check-ins";
+      msg.textContent = "Network error — please try again.";
+      msg.className = "msg show error";
+    }
+  }
+
+  document.getElementById("checkin-form").addEventListener("submit", handleSubmit);
+  document.getElementById("f-school").addEventListener("change", function () {
+    document.getElementById("other-school-wrap").style.display = this.value === "Other" ? "" : "none";
+  });
+  document.getElementById("another-btn").addEventListener("click", resetForm);
+  document.getElementById("clear-btn").addEventListener("click", handleClearAll);
+
+  loadList();
+})();
+</script>
+</body>
+</html>

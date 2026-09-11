@@ -1,0 +1,10 @@
+{
+  "name": "ieee-career-fair-checkin",
+  "private": true,
+  "version": "1.0.0",
+  "description": "IEEE Global Career Fair watch party check-in form for Evangel University Computer Science",
+  "type": "module",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
